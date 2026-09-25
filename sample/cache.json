@@ -1,0 +1,22 @@
+{
+  "bad_range_code": "E_BAD_RANGE",
+  "budget": 2,
+  "entries": {
+    "user:1": {"value": "alice", "watermark": 3},
+    "user:2": {"value": "bob", "watermark": 5},
+    "order:1": {"value": 42, "watermark": 6}
+  },
+  "writes": [
+    {"key": "user:1", "watermark": 7},
+    {"key": "order:9", "watermark": 8}
+  ],
+  "ranges": [
+    {"prefix": "user:", "watermark": 6}
+  ],
+  "reads": [
+    {"key": "user:1", "need": 3},
+    {"key": "user:2", "need": 6},
+    {"key": "order:1", "need": 6}
+  ],
+  "re_prefix": "prefix"
+}
