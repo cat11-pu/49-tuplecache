@@ -12,18 +12,18 @@ const spec = JSON.parse(fs.readFileSync(process.argv[2] || "sample/cache.json", 
 let hitCount = 0;
 const detail = [];
 for (const read of spec.reads || []) {
-  const result = lookup(spec.entries || {}, read.key);
+  const result = lookup(spec.entries || {}, read.key, read.need);
   detail.push([read.key, result.hit]);
   if (result.hit) hitCount += 1;
 }
 const after = invalidate(spec.entries || {}, spec.writes || [], spec.ranges || [], spec.budget);
 const view = render(spec);
 
-emit("每次读是否命中 =", JSON.stringify(detail));
+emit("每次读是否命中 =", detail);
 emit("命中数 =", hitCount);
-emit("失效的键 =", JSON.stringify(after.invalidated));
-emit("重建的键 =", JSON.stringify(after.rebuilt));
-emit("预算不足标陈旧的键 =", JSON.stringify(after.stale));
+emit("失效的键 =", after.invalidated);
+emit("重建的键 =", after.rebuilt);
+emit("预算不足标陈旧的键 =", after.stale);
 emit("水位是否满足 =", view.consistent);
 emit("范围非法的错误码 =", spec.bad_range_code);
 
